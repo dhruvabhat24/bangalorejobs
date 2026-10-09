@@ -132,10 +132,7 @@ def matches(job, cfg):
         return None
     if not exp and not cfg.get("allow_unspecified_experience", True):
         return None
-    content = (title + " " + job["description"]).casefold()
-    skills = [s for s in cfg["skills"] if re.search(r"(?<!\w)" + re.escape(s.casefold()) + r"(?!\w)", content)]
-    if len(skills) < cfg.get("minimum_skill_matches", 0):
-        return None
+    skills = []  # Match on title, location and experience only.
     junior = bool(re.search(r"\b(?:junior|associate|entry.level|graduate|early.career|fresher)\b", title, re.I))
     return {"score": min(100, 65 + (20 if exp else 0) + (15 if junior else 0)), "skills": skills, "experience": exp}
 
