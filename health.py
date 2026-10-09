@@ -44,11 +44,16 @@ def summarize(data, now=None):
     ok = sum(b["status"] == "ok" for b in latest.values())
     zero = sum(b["status"] == "empty" for b in latest.values())
     bad = sum(b["status"] == "failed" for b in latest.values())
+    latest_scan = scans[-1]
+    current = latest_scan.get("current_matches", "not yet recorded")
+    sample = "\n".join(x["title"] + " - " + x["url"] for x in latest_scan.get("current_examples", [])[:3])
     failed = ", ".join(f"{name} ({count})" for name,count in failures.most_common(8)) or "None"
     return ("Bangalore Job Alerts - last 24h\n"
             f"Scans: {len(scans)} | Listings scanned: {total}\n"
             f"New role matches: {matches} | Alerts sent: {sent}\n"
-            f"Latest board states: {ok} OK, {zero} empty, {bad} failed\n"
+            f"Current matching openings (latest scan): {current}\n"
+            + (f"Examples:\n{sample}\n" if sample else "")
+            + f"Latest board states: {ok} OK, {zero} empty, {bad} failed\n"
             f"Failed boards (failure counts): {failed}\n"
             "Note: listing scans count repeated checks, not unique jobs.")
 

@@ -110,6 +110,8 @@ def run(dry_run=False):
     total = 0
     successful_boards = 0
     diagnostics = []
+    current_ids = set()
+    current_examples = []
     for provider, boards in cfg["sources"].items():
         loader = {"greenhouse": greenhouse, "lever": lever}.get(provider)
         if not loader:
@@ -129,9 +131,14 @@ def run(dry_run=False):
                 continue
             for job in jobs:
                 total += 1
+                quality_current = matches(job, cfg)
+                if quality_current:
+                    current_ids.add(job["id"])
+                    if len(current_examples) < 3:
+                        current_examples.append({"title": job["title"], "url": job["url"]})
                 if job["id"] in seen:
                     continue
-                quality = matches(job, cfg)
+                quality = quality_current
                 if quality:
                     candidates.append((job, quality))
                 seen.add(job["id"])
@@ -164,7 +171,7 @@ def run(dry_run=False):
             seen.difference_update(j["id"] for j, _ in candidates if j["id"] not in notified)
         STATE.parent.mkdir(parents=True, exist_ok=True)
         STATE.write_text(json.dumps({"ids": sorted(seen)}, indent=2) + "\n", encoding="utf-8")
-        save_scan({"at": utc_now(), "boards": diagnostics, "postings": total, "new_matches": len(candidates), "alerts_sent": len(notified)})
+        save_scan({"at": utc_now(), "boards": diagnostics, "postings": total, "new_matches": len(candidates), "alerts_sent": len(notified), "current_matches": len(current_ids), "current_examples": current_examples})
         LOG.info("Board health: %d OK, %d empty, %d failed", sum(b["status"] == "ok" for b in diagnostics), sum(b["status"] == "empty" for b in diagnostics), sum(b["status"] == "failed" for b in diagnostics))
 
 if __name__ == "__main__":
