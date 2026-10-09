@@ -14,6 +14,12 @@ class MatchingTests(unittest.TestCase):
         self.assertEqual(filter_stage(job(title="Accountant"),CFG),"title")
         self.assertEqual(filter_stage(job(location="Pune"),CFG),"location")
         self.assertEqual(filter_stage(job(description="7+ years experience"),CFG),"experience")
+    def test_filter_diagnostics_stages(self):
+        from monitor import filter_stage
+        self.assertEqual(filter_stage(job(), CFG), "eligible")
+        self.assertEqual(filter_stage(job(title="Finance Analyst"), CFG), "title")
+        self.assertEqual(filter_stage(job(location="Pune"), CFG), "location")
+        self.assertEqual(filter_stage(job(description="5+ years experience"), CFG), "experience")
     def test_good_match(self):
         self.assertIsNotNone(matches(job(),CFG))
     def test_not_bangalore(self):

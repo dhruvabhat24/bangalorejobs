@@ -189,6 +189,18 @@ def run(dry_run=False):
                 continue
             for job in jobs:
                 total += 1
+                stages["total"] += 1
+                rejection = filter_stage(job, cfg)
+                if rejection != "title":
+                    stages["title"] += 1
+                    if rejection != "location":
+                        stages["location"] += 1
+                        if rejection == "eligible":
+                            stages["eligible"] += 1
+                if rejection in near_matches and len(near_matches[rejection]) < 2:
+                    near_matches[rejection].append({
+                        "title": job["title"], "location": job["location"], "url": job["url"]
+                    })
                 quality_current = matches(job, cfg)
                 if quality_current:
                     current_ids.add(job["id"])
