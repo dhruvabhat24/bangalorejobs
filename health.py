@@ -49,9 +49,9 @@ def summarize(data, now=None):
     sample = "\n".join(x["title"] + " - " + x["url"] for x in latest_scan.get("current_examples", [])[:3])
     failed = ", ".join(f"{name} ({count})" for name,count in failures.most_common(8)) or "None"
     stages = latest_scan.get("filter_stages", {})
-    stage_text = (f"Filter stages (latest scan): total {stages.get('total', 'n/a')} -> title {stages.get('title', 'n/a')} -> Bangalore {stages.get('location', 'n/a')} -> experience {stages.get('eligible', 'n/a')}\\n")
+    stage_text = (f"Filter stages (latest scan): total {stages.get('total', 'n/a')} -> title {stages.get('title', 'n/a')} -> Bangalore {stages.get('location', 'n/a')} -> experience {stages.get('eligible', 'n/a')}\n")
     near = latest_scan.get("near_matches", {})
-    near_text = "Near matches: " + ", ".join(f"{k} rejected {len(v)} examples" for k,v in near.items()) + "\\n" if near else ""
+    near_text = "Near matches: " + ", ".join(f"{k} rejected {len(v)} examples" for k,v in near.items()) + "\n" if near else ""
     current_failed = [b["source"] for b in latest_scan.get("boards", []) if b.get("status") == "failed"]
     return ("Bangalore Job Alerts - last 24h\n"
             f"Scans: {len(scans)} | Listings scanned: {total}\n"
