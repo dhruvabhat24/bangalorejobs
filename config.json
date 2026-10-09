@@ -1,0 +1,38 @@
+{
+  "titles": [
+    "DevOps Engineer",
+    "Cloud Engineer",
+    "Site Reliability Engineer",
+    "Linux Administrator"
+  ],
+  "experience_min": 1,
+  "experience_max": 2,
+  "locations": [
+    "bangalore",
+    "bengaluru"
+  ],
+  "skills": [
+    "Docker",
+    "Git",
+    "Kubernetes",
+    "Linux",
+    "Python",
+    "Terraform",
+    "Azure",
+    "GCP",
+    "Prometheus"
+  ],
+  "minimum_skill_matches": 0,
+  "allow_unspecified_experience": true,
+  "first_run": "baseline",
+  "max_alerts_per_run": 20,
+  "sources": {
+    "greenhouse": [
+      "cloudflare",
+      "datadog"
+    ],
+    "lever": [
+      "postman"
+    ]
+  }
+}
