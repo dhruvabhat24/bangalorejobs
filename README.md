@@ -56,3 +56,13 @@ Dry run does not send Telegram alerts or save state.
 The configuration now includes over 35 candidate Greenhouse/Lever company boards. **These are candidate slugs, not a verified list of active APIs:** some will return 404 or no Bangalore jobs, and the workflow logs will report those failures. Remove invalid boards after reviewing the logs. Board scans may take longer and can hit API limits; reduce the list if workflow timeouts occur. Role matching includes platform/infrastructure/system engineering roles and junior/associate language. The seen-ID history was retained. Existing job alerts still require a new detection event; rerunning does not resend historic listings.
 
 No paid sources, scraping of protected job boards, or AI service is required. Company-board APIs still cannot guarantee coverage of every job on the internet.
+
+## Source health and daily Telegram digest
+- Every scan writes `data/health.json` with timestamp, board-by-board status (`ok`, `empty`, `failed`), number of postings, new matches and successfully delivered Telegram alerts.
+- Diagnostic errors are deliberately sanitized (e.g. HTTP 404) to avoid dumping full URLs or tokens into logs.
+- Scan history is kept for 14 days; old data expires on subsequent scans.
+- At **03:15 UTC every day (08:45 India time)**, `Daily Job Monitor Report` sends a 24-hour Telegram summary. It can also be run manually from Actions.
+- The report summarizes scan counts, total fetched postings (not unique vacancies), new matching jobs, sent alerts, and the last observed state of each board. It also lists the most frequently failing boards.
+- `python -m unittest discover -s tests -v` runs before each scheduled scan and daily digest.
+- Both `data/seen.json` and `data/health.json` are committed by the scan workflow; enable Actions **Read and write permissions**.
+- The daily report is best-effort on GitHub Actions scheduling; a missing report can indicate scheduling delay, an Actions outage, or workflow failure.

@@ -1,0 +1,22 @@
+name: Daily Job Monitor Report
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 3 * * *'
+permissions:
+  contents: read
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate health report
+        run: python -m unittest discover -s tests -v
+      - name: Send Telegram daily report
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python daily_report.py

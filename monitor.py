@@ -10,6 +10,7 @@ import time
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
+from health import save_scan, utc_now, failure_reason
 
 ROOT = Path(__file__).resolve().parent
 STATE = ROOT / "data" / "seen.json"
@@ -108,17 +109,23 @@ def run(dry_run=False):
     candidates = []
     total = 0
     successful_boards = 0
+    diagnostics = []
     for provider, boards in cfg["sources"].items():
         loader = {"greenhouse": greenhouse, "lever": lever}.get(provider)
         if not loader:
+            for board in boards:
+                diagnostics.append({"source": f"{provider}/{board}", "status": "failed", "postings": 0, "error": "unsupported provider"})
             LOG.warning("Unsupported provider: %s", provider)
             continue
         for board in boards:
             try:
                 jobs = list(loader(board))
                 successful_boards += 1
+                diagnostics.append({"source": f"{provider}/{board}", "status": "ok" if jobs else "empty", "postings": len(jobs)})
             except Exception as exc:
-                LOG.warning("Failed %s/%s: %s", provider, board, exc)
+                reason = failure_reason(exc)
+                diagnostics.append({"source": f"{provider}/{board}", "status": "failed", "postings": 0, "error": reason})
+                LOG.warning("Failed %s/%s: %s", provider, board, reason)
                 continue
             for job in jobs:
                 total += 1
@@ -129,7 +136,9 @@ def run(dry_run=False):
                     candidates.append((job, quality))
                 seen.add(job["id"])
     if not successful_boards:
-        raise RuntimeError("No job boards were reachable; state preserved")
+        if not dry_run:
+            save_scan({"at": utc_now(), "boards": diagnostics, "postings": total, "new_matches": 0, "alerts_sent": 0})
+        raise RuntimeError("No job boards were reachable; seen history preserved")
     candidates.sort(key=lambda item: item[1]["score"], reverse=True)
     LOG.info("Checked %d postings; %d newly matching", total, len(candidates))
     baseline = first_run and cfg.get("first_run") == "baseline"
@@ -155,6 +164,8 @@ def run(dry_run=False):
             seen.difference_update(j["id"] for j, _ in candidates if j["id"] not in notified)
         STATE.parent.mkdir(parents=True, exist_ok=True)
         STATE.write_text(json.dumps({"ids": sorted(seen)}, indent=2) + "\n", encoding="utf-8")
+        save_scan({"at": utc_now(), "boards": diagnostics, "postings": total, "new_matches": len(candidates), "alerts_sent": len(notified)})
+        LOG.info("Board health: %d OK, %d empty, %d failed", sum(b["status"] == "ok" for b in diagnostics), sum(b["status"] == "empty" for b in diagnostics), sum(b["status"] == "failed" for b in diagnostics))
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
