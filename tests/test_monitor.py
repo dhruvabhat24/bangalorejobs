@@ -2,7 +2,7 @@ import unittest
 import sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from monitor import matches, years_required, himalayas
+from monitor import matches, years_required, himalayas, ashby, select_boards
 from unittest.mock import patch
 
 CFG={"experience_min":1,"experience_max":2,"locations":["bangalore","bengaluru"],"skills":["Docker","Git","Linux","Terraform"],"minimum_skill_matches":0,"allow_unspecified_experience":True}
@@ -29,6 +29,22 @@ class MatchingTests(unittest.TestCase):
             jobs=list(himalayas("cloud engineer"))
         self.assertEqual(len(jobs),1)
         self.assertIsNone(matches(jobs[0],CFG))
+    def test_ashby_locations_and_listed(self):
+        response={"jobs":[{"id":"abc","isListed":True,"title":"DevOps Engineer","location":"Remote","secondaryLocations":[{"location":"Bengaluru"}],"descriptionPlain":"1-2 years","jobUrl":"https://jobs.ashbyhq.com/demo/abc"},{"id":"hidden","isListed":False,"title":"Cloud Engineer"}]}
+        with patch("monitor.fetch_json", return_value=response):
+            found=list(ashby("demo"))
+        self.assertEqual(len(found),1)
+        self.assertIsNotNone(matches(found[0],CFG))
+    def test_batches_cover_every_board(self):
+        from datetime import datetime, timezone, timedelta
+        boards=[str(x) for x in range(90)]
+        cfg={"ashby_batch_size":18}
+        base=datetime(2026,10,9,0,0,tzinfo=timezone.utc)
+        batches=[select_boards("ashby",boards,cfg,base+timedelta(minutes=30*i)) for i in range(5)]
+        self.assertEqual(set().union(*map(set,batches)),set(boards))
+    def test_skills_not_required(self):
+        cfg=dict(CFG,skills=["ImpossibleSkill"],minimum_skill_matches=999)
+        self.assertIsNotNone(matches(job(),cfg))
     def test_years_parse(self):
         self.assertEqual(years_required("2-4 years experience"),[(2,4)])
 if __name__=="__main__":

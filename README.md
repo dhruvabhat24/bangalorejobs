@@ -66,3 +66,10 @@ No paid sources, scraping of protected job boards, or AI service is required. Co
 - `python -m unittest discover -s tests -v` runs before each scheduled scan and daily digest.
 - Both `data/seen.json` and `data/health.json` are committed by the scan workflow; enable Actions **Read and write permissions**.
 - The daily report is best-effort on GitHub Actions scheduling; a missing report can indicate scheduling delay, an Actions outage, or workflow failure.
+
+## 100+ companies: Ashby batch expansion
+The monitor now has **105 distinct configured company boards** (15 Greenhouse/Lever + 90 Ashby slugs from the [public ATS directory](https://github.com/moonie0201/ats-directory)). These 90 slugs had `status: ok` in the third-party directory when selected; this is *not* independent live verification that they still work or are hiring in Bangalore. Any failed boards will be reported in scan-health diagnostics.
+
+To keep each run under free GitHub Actions limits, the 90 Ashby boards are split into **five batches of 18**, with one batch scanned per half-hour interval. The original 15 boards and four Himalayas queries run each interval. Across five consecutive normally scheduled scans (~2.5 hours), all 105 configured company boards are checked. A manual run may repeat the same half-hour batch.
+
+Only title, experience, and explicit Bangalore/Bengaluru location determine match eligibility. Skills do not filter or rank results. Listings with unspecified experience remain eligible (the setting can be tightened via `allow_unspecified_experience`). The daily snapshot is **per most recent batch**, not a simultaneous snapshot of all 105 companies. This setup does not guarantee alerts for postings that disappear before their batch is checked.

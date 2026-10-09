@@ -82,6 +82,31 @@ def himalayas(query):
                "description": plain(j.get("description", "")),
                "url": j.get("applicationLink") or ""}
 
+def ashby(board):
+    """Ashby public postings API: listed jobs only, including secondary locations."""
+    data = fetch_json("https://api.ashbyhq.com/posting-api/job-board/" + quote(board, safe=""))
+    for job in data.get("jobs", []):
+        if job.get("isListed") is False:
+            continue
+        extras = job.get("secondaryLocations") or []
+        location = " | ".join([str(job.get("location") or "")] + [str(x.get("location") or "") for x in extras if isinstance(x, dict)])
+        yield {"id": "ashby:" + board + ":" + str(job.get("id") or job.get("jobUrl")),
+               "source": "Ashby/" + board,
+               "title": job.get("title", ""), "location": location,
+               "description": plain(job.get("descriptionPlain") or job.get("descriptionHtml") or ""),
+               "url": job.get("jobUrl") or job.get("applyUrl") or ""}
+
+def select_boards(provider, boards, cfg, now=None):
+    """Cycle large Ashby lists across half-hour slots; scan the full set every ~2.5h."""
+    if provider != "ashby":
+        return boards
+    from datetime import datetime, timezone
+    now = now or datetime.now(timezone.utc)
+    size = max(1, int(cfg.get("ashby_batch_size", 18)))
+    batches = (len(boards) + size - 1) // size
+    slot = (int(now.timestamp()) // 1800) % max(batches, 1)
+    return boards[slot * size:(slot + 1) * size]
+
 def years_required(description):
     result = []
     for m in EXPERIENCE.finditer(description[:20000]):
@@ -112,7 +137,7 @@ def matches(job, cfg):
     if len(skills) < cfg.get("minimum_skill_matches", 0):
         return None
     junior = bool(re.search(r"\b(?:junior|associate|entry.level|graduate|early.career|fresher)\b", title, re.I))
-    return {"score": min(100, 55 + 5 * len(skills) + (10 if exp else 0) + (10 if junior else 0)), "skills": skills, "experience": exp}
+    return {"score": min(100, 65 + (20 if exp else 0) + (15 if junior else 0)), "skills": skills, "experience": exp}
 
 def send(token, chat_id, text):
     response = fetch_json("https://api.telegram.org/bot" + token + "/sendMessage",
@@ -131,8 +156,9 @@ def run(dry_run=False):
     diagnostics = []
     current_ids = set()
     current_examples = []
-    for provider, boards in cfg["sources"].items():
-        loader = {"greenhouse": greenhouse, "lever": lever, "himalayas": himalayas}.get(provider)
+    for provider, all_boards in cfg["sources"].items():
+        boards = select_boards(provider, all_boards, cfg)
+        loader = {"greenhouse": greenhouse, "lever": lever, "himalayas": himalayas, "ashby": ashby}.get(provider)
         if not loader:
             for board in boards:
                 diagnostics.append({"source": f"{provider}/{board}", "status": "failed", "postings": 0, "error": "unsupported provider"})
@@ -190,7 +216,7 @@ def run(dry_run=False):
             seen.difference_update(j["id"] for j, _ in candidates if j["id"] not in notified)
         STATE.parent.mkdir(parents=True, exist_ok=True)
         STATE.write_text(json.dumps({"ids": sorted(seen)}, indent=2) + "\n", encoding="utf-8")
-        save_scan({"at": utc_now(), "boards": diagnostics, "postings": total, "new_matches": len(candidates), "alerts_sent": len(notified), "current_matches": len(current_ids), "current_examples": current_examples})
+        save_scan({"at": utc_now(), "boards": diagnostics, "postings": total, "new_matches": len(candidates), "alerts_sent": len(notified), "current_matches": len(current_ids), "current_examples": current_examples, "company_boards_configured": sum(len(v) for k,v in cfg["sources"].items() if k in ("greenhouse","lever","ashby")), "company_boards_scanned": sum(1 for b in diagnostics if b["source"].split("/")[0] in ("greenhouse","lever","ashby"))})
         LOG.info("Board health: %d OK, %d empty, %d failed", sum(b["status"] == "ok" for b in diagnostics), sum(b["status"] == "empty" for b in diagnostics), sum(b["status"] == "failed" for b in diagnostics))
 
 if __name__ == "__main__":
