@@ -232,6 +232,111 @@
       "postings": 4242,
       "new_matches": 0,
       "alerts_sent": 0
+    },
+    {
+      "at": "2026-10-09T06:20:26+00:00",
+      "boards": [
+        {
+          "source": "greenhouse/cloudflare",
+          "status": "ok",
+          "postings": 425
+        },
+        {
+          "source": "greenhouse/datadog",
+          "status": "ok",
+          "postings": 432
+        },
+        {
+          "source": "greenhouse/groww",
+          "status": "ok",
+          "postings": 9
+        },
+        {
+          "source": "greenhouse/mongodb",
+          "status": "ok",
+          "postings": 396
+        },
+        {
+          "source": "greenhouse/elastic",
+          "status": "ok",
+          "postings": 415
+        },
+        {
+          "source": "greenhouse/rubrik",
+          "status": "ok",
+          "postings": 133
+        },
+        {
+          "source": "greenhouse/databricks",
+          "status": "ok",
+          "postings": 894
+        },
+        {
+          "source": "greenhouse/gitlab",
+          "status": "ok",
+          "postings": 220
+        },
+        {
+          "source": "greenhouse/cockroachlabs",
+          "status": "ok",
+          "postings": 18
+        },
+        {
+          "source": "greenhouse/stripe",
+          "status": "ok",
+          "postings": 730
+        },
+        {
+          "source": "greenhouse/airtable",
+          "status": "ok",
+          "postings": 4
+        },
+        {
+          "source": "greenhouse/figma",
+          "status": "ok",
+          "postings": 153
+        },
+        {
+          "source": "lever/palantir",
+          "status": "ok",
+          "postings": 313
+        },
+        {
+          "source": "lever/zeta",
+          "status": "ok",
+          "postings": 24
+        },
+        {
+          "source": "lever/spotify",
+          "status": "ok",
+          "postings": 79
+        },
+        {
+          "source": "himalayas/devops engineer",
+          "status": "ok",
+          "postings": 19
+        },
+        {
+          "source": "himalayas/site reliability engineer",
+          "status": "ok",
+          "postings": 20
+        },
+        {
+          "source": "himalayas/cloud engineer",
+          "status": "ok",
+          "postings": 20
+        },
+        {
+          "source": "himalayas/linux administrator",
+          "status": "ok",
+          "postings": 20
+        }
+      ],
+      "postings": 4324,
+      "new_matches": 0,
+      "alerts_sent": 0,
+      "current_matches": 0,
+      "current_examples": []
     }
   ]
 }
