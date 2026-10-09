@@ -1,0 +1,49 @@
+name: Test Telegram Notification
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-telegram:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Send Telegram test message
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+          chat_id = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
+          if not token or not chat_id:
+              raise SystemExit("Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID GitHub Actions secret.")
+
+          # Do not include the token in error output or logs.
+          url = "https://api.telegram.org/bot" + token + "/sendMessage"
+          payload = json.dumps({
+              "chat_id": chat_id,
+              "text": "✅ Bangalore Job Alerts: Telegram test successful! Your bot can send you notifications."
+          }).encode("utf-8")
+          request = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"})
+          try:
+              with urllib.request.urlopen(request, timeout=20) as response:
+                  result = json.load(response)
+          except urllib.error.HTTPError as exc:
+              raise SystemExit("Telegram request failed with HTTP status " + str(exc.code) + ". Check the secrets and start your bot.") from None
+          except Exception:
+              raise SystemExit("Telegram request failed. Check secrets and network connectivity.") from None
+          if not result.get("ok"):
+              raise SystemExit("Telegram did not accept the message. Check bot token and chat ID.")
+          print("Telegram accepted the test message.")
+          PY
