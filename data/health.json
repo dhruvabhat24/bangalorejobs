@@ -337,6 +337,203 @@
       "alerts_sent": 0,
       "current_matches": 0,
       "current_examples": []
+    },
+    {
+      "at": "2026-10-09T06:30:47+00:00",
+      "boards": [
+        {
+          "source": "greenhouse/cloudflare",
+          "status": "ok",
+          "postings": 423
+        },
+        {
+          "source": "greenhouse/datadog",
+          "status": "ok",
+          "postings": 432
+        },
+        {
+          "source": "greenhouse/groww",
+          "status": "ok",
+          "postings": 9
+        },
+        {
+          "source": "greenhouse/mongodb",
+          "status": "ok",
+          "postings": 396
+        },
+        {
+          "source": "greenhouse/elastic",
+          "status": "ok",
+          "postings": 415
+        },
+        {
+          "source": "greenhouse/rubrik",
+          "status": "ok",
+          "postings": 133
+        },
+        {
+          "source": "greenhouse/databricks",
+          "status": "ok",
+          "postings": 894
+        },
+        {
+          "source": "greenhouse/gitlab",
+          "status": "ok",
+          "postings": 220
+        },
+        {
+          "source": "greenhouse/cockroachlabs",
+          "status": "ok",
+          "postings": 18
+        },
+        {
+          "source": "greenhouse/stripe",
+          "status": "ok",
+          "postings": 730
+        },
+        {
+          "source": "greenhouse/airtable",
+          "status": "ok",
+          "postings": 4
+        },
+        {
+          "source": "greenhouse/figma",
+          "status": "ok",
+          "postings": 153
+        },
+        {
+          "source": "lever/palantir",
+          "status": "ok",
+          "postings": 313
+        },
+        {
+          "source": "lever/zeta",
+          "status": "ok",
+          "postings": 24
+        },
+        {
+          "source": "lever/spotify",
+          "status": "ok",
+          "postings": 79
+        },
+        {
+          "source": "himalayas/devops engineer",
+          "status": "ok",
+          "postings": 19
+        },
+        {
+          "source": "himalayas/site reliability engineer",
+          "status": "ok",
+          "postings": 20
+        },
+        {
+          "source": "himalayas/cloud engineer",
+          "status": "ok",
+          "postings": 20
+        },
+        {
+          "source": "himalayas/linux administrator",
+          "status": "ok",
+          "postings": 20
+        },
+        {
+          "source": "ashby/beaconai",
+          "status": "ok",
+          "postings": 19
+        },
+        {
+          "source": "ashby/beaconsoftware",
+          "status": "ok",
+          "postings": 49
+        },
+        {
+          "source": "ashby/benchling",
+          "status": "ok",
+          "postings": 57
+        },
+        {
+          "source": "ashby/bild-ai",
+          "status": "ok",
+          "postings": 4
+        },
+        {
+          "source": "ashby/binance.us",
+          "status": "ok",
+          "postings": 8
+        },
+        {
+          "source": "ashby/blackbird-labs-inc",
+          "status": "ok",
+          "postings": 5
+        },
+        {
+          "source": "ashby/blissway",
+          "status": "ok",
+          "postings": 11
+        },
+        {
+          "source": "ashby/blitzy",
+          "status": "ok",
+          "postings": 34
+        },
+        {
+          "source": "ashby/blockhouse",
+          "status": "empty",
+          "postings": 0
+        },
+        {
+          "source": "ashby/bloxd",
+          "status": "empty",
+          "postings": 0
+        },
+        {
+          "source": "ashby/brainbaselabs",
+          "status": "ok",
+          "postings": 6
+        },
+        {
+          "source": "ashby/brainco",
+          "status": "ok",
+          "postings": 34
+        },
+        {
+          "source": "ashby/bree",
+          "status": "ok",
+          "postings": 13
+        },
+        {
+          "source": "ashby/bridger",
+          "status": "ok",
+          "postings": 3
+        },
+        {
+          "source": "ashby/brinc",
+          "status": "ok",
+          "postings": 32
+        },
+        {
+          "source": "ashby/broccoli",
+          "status": "ok",
+          "postings": 33
+        },
+        {
+          "source": "ashby/cantina",
+          "status": "ok",
+          "postings": 18
+        },
+        {
+          "source": "ashby/capy",
+          "status": "ok",
+          "postings": 2
+        }
+      ],
+      "postings": 4650,
+      "new_matches": 0,
+      "alerts_sent": 0,
+      "current_matches": 0,
+      "current_examples": [],
+      "company_boards_configured": 105,
+      "company_boards_scanned": 33
     }
   ]
 }
