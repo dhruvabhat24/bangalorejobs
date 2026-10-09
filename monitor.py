@@ -8,7 +8,7 @@ from pathlib import Path
 import re
 import time
 from urllib.error import HTTPError, URLError
-from urllib.parse import quote
+from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 from health import save_scan, utc_now, failure_reason
 
@@ -63,6 +63,25 @@ def lever(board):
         if len(jobs) < 100:
             return
 
+def himalayas(query):
+    """Free Himalayas remote-job search; location matching remains strict."""
+    url = "https://himalayas.app/jobs/api/search?" + urlencode({"q": query, "country": "IN", "sort": "recent", "page": 1})
+    response = fetch_json(url)
+    jobs = response.get("jobs", [])
+    if not isinstance(jobs, list):
+        raise ValueError("Unexpected Himalayas response")
+    for j in jobs:
+        restrictions = j.get("locationRestrictions") or []
+        if not isinstance(restrictions, list):
+            restrictions = [str(restrictions)]
+        location = " ".join([str(j.get("location") or ""), " ".join(map(str, restrictions))])
+        yield {"id": "himalayas:" + str(j.get("guid") or j.get("applicationLink")),
+               "source": "Himalayas/" + str(j.get("companyName") or "Unknown"),
+               "title": j.get("title", ""),
+               "location": location,
+               "description": plain(j.get("description", "")),
+               "url": j.get("applicationLink") or ""}
+
 def years_required(description):
     result = []
     for m in EXPERIENCE.finditer(description[:20000]):
@@ -113,7 +132,7 @@ def run(dry_run=False):
     current_ids = set()
     current_examples = []
     for provider, boards in cfg["sources"].items():
-        loader = {"greenhouse": greenhouse, "lever": lever}.get(provider)
+        loader = {"greenhouse": greenhouse, "lever": lever, "himalayas": himalayas}.get(provider)
         if not loader:
             for board in boards:
                 diagnostics.append({"source": f"{provider}/{board}", "status": "failed", "postings": 0, "error": "unsupported provider"})

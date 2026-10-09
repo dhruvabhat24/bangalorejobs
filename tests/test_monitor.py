@@ -2,7 +2,8 @@ import unittest
 import sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from monitor import matches, years_required
+from monitor import matches, years_required, himalayas
+from unittest.mock import patch
 
 CFG={"experience_min":1,"experience_max":2,"locations":["bangalore","bengaluru"],"skills":["Docker","Git","Linux","Terraform"],"minimum_skill_matches":0,"allow_unspecified_experience":True}
 def job(title="DevOps Engineer", location="Bengaluru", description="1-2 years experience in Docker and Linux"):
@@ -22,6 +23,12 @@ class MatchingTests(unittest.TestCase):
         self.assertIsNotNone(matches(job(description="1-3 years experience"),CFG))
     def test_platform_engineer(self):
         self.assertIsNotNone(matches(job(title="Junior Platform Engineer"),CFG))
+    def test_himalayas_parsing_and_strict_location(self):
+        response={"jobs":[{"guid":"x1","title":"Cloud Engineer","companyName":"Demo","locationRestrictions":["India"],"description":"2 years","applicationLink":"https://himalayas.app/jobs/demo"}]}
+        with patch("monitor.fetch_json", return_value=response):
+            jobs=list(himalayas("cloud engineer"))
+        self.assertEqual(len(jobs),1)
+        self.assertIsNone(matches(jobs[0],CFG))
     def test_years_parse(self):
         self.assertEqual(years_required("2-4 years experience"),[(2,4)])
 if __name__=="__main__":
