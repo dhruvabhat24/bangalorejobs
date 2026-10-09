@@ -16,9 +16,9 @@ STATE = ROOT / "data" / "seen.json"
 LOG = logging.getLogger("jobs")
 TITLE = [
     r"\bdev\s*ops\b", r"\bcloud\s+(?:infrastructure\s+)?engineer\b",
-    r"\bsite\s+reliability\b|\bsre\b", r"\blinux\s+(?:systems?\s+)?admin(?:istrator)?\b"
+    r"\bsite\s+reliability\b|\bsre\b", r"\blinux\s+(?:systems?\s+)?admin(?:istrator)?\b", r"\b(?:platform|infrastructure|cloud\s+operations|systems?)\s+engineer\b", r"\b(?:junior|associate)\s+(?:devops|cloud|sre|linux)\b"
 ]
-SENIOR = re.compile(r"\b(?:senior|sr\.?|staff|principal|lead|manager|director|architect|head of)\b", re.I)
+SENIOR = re.compile(r"\b(?:senior|sr\.?|staff|principal|lead|manager|director|architect|head of|internship)\b", re.I)
 EXPERIENCE = re.compile(
     r"(?<!\d)(\d{1,2})\s*(?:-|–|—|to)\s*(\d{1,2})\s*(?:years?|yrs?)\b"
     r"|(?<!\d)(\d{1,2})\s*\+\s*(?:years?|yrs?)\b"
@@ -91,7 +91,8 @@ def matches(job, cfg):
     skills = [s for s in cfg["skills"] if re.search(r"(?<!\w)" + re.escape(s.casefold()) + r"(?!\w)", content)]
     if len(skills) < cfg.get("minimum_skill_matches", 0):
         return None
-    return {"score": min(100, 60 + 5 * len(skills) + (5 if exp else 0)), "skills": skills}
+    junior = bool(re.search(r"\b(?:junior|associate|entry.level|graduate|early.career|fresher)\b", title, re.I))
+    return {"score": min(100, 55 + 5 * len(skills) + (10 if exp else 0) + (10 if junior else 0)), "skills": skills, "experience": exp}
 
 def send(token, chat_id, text):
     response = fetch_json("https://api.telegram.org/bot" + token + "/sendMessage",
@@ -132,6 +133,7 @@ def run(dry_run=False):
     candidates.sort(key=lambda item: item[1]["score"], reverse=True)
     LOG.info("Checked %d postings; %d newly matching", total, len(candidates))
     baseline = first_run and cfg.get("first_run") == "baseline"
+    notified = set()
     if not baseline:
         token, chat_id = os.getenv("TELEGRAM_BOT_TOKEN"), os.getenv("TELEGRAM_CHAT_ID")
         if not dry_run and (not token or not chat_id):
@@ -139,14 +141,18 @@ def run(dry_run=False):
         for job, match in candidates[:cfg.get("max_alerts_per_run", 20)]:
             message = (f"New Bengaluru Job Match ({match['score']}/100)\n"
                        f"{job['title']}\nLocation: {job['location']}\n"
-                       f"Source: {job['source']}\nSkills: {', '.join(match['skills']) or 'Unspecified'}\n{job['url']}")
+                       f"Company/board: {job['source']}\nExperience: {match['experience'] or 'Not specified'}\nSkills: {', '.join(match['skills']) or 'Unspecified'}\n{job['url']}")
             if dry_run:
                 print(message)
             else:
                 send(token, chat_id, message)
+                notified.add(job["id"])
     else:
         LOG.info("Initial scan baseline; suppressing alerts for existing postings")
     if not dry_run:
+        # Unsent matching jobs beyond the alert cap remain eligible on a later scan.
+        if not baseline:
+            seen.difference_update(j["id"] for j, _ in candidates if j["id"] not in notified)
         STATE.parent.mkdir(parents=True, exist_ok=True)
         STATE.write_text(json.dumps({"ids": sorted(seen)}, indent=2) + "\n", encoding="utf-8")
 

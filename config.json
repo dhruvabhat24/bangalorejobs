@@ -29,10 +29,47 @@
   "sources": {
     "greenhouse": [
       "cloudflare",
-      "datadog"
+      "datadog",
+      "razorpay",
+      "browserstack",
+      "meesho",
+      "phonepe",
+      "cred",
+      "swiggy",
+      "freshworks",
+      "groww",
+      "chargebee",
+      "mongodb",
+      "elastic",
+      "rubrik",
+      "databricks",
+      "atlassian",
+      "thoughtspot",
+      "plaid",
+      "hashicorp",
+      "gitlab",
+      "confluent",
+      "grafana",
+      "cockroachlabs",
+      "stripe",
+      "airtable",
+      "figma"
     ],
     "lever": [
-      "postman"
+      "postman",
+      "canva",
+      "zerodha",
+      "rippling",
+      "netlify",
+      "redis",
+      "palantir",
+      "sourcegraph",
+      "sentry",
+      "samsara",
+      "clear",
+      "zeta",
+      "coinbase",
+      "spotify"
     ]
   }
 }

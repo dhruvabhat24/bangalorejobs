@@ -51,3 +51,8 @@ Dry run does not send Telegram alerts or save state.
 - GitHub Actions schedules are not guaranteed real-time. Public repository scheduled workflows may be disabled after inactivity.
 - Multiple jobs in a scan beyond `max_alerts_per_run` are not notified in that run.
 - Telegram secrets must NEVER be placed in the repository or chat.
+
+## Expanded coverage (v2)
+The configuration now includes over 35 candidate Greenhouse/Lever company boards. **These are candidate slugs, not a verified list of active APIs:** some will return 404 or no Bangalore jobs, and the workflow logs will report those failures. Remove invalid boards after reviewing the logs. Board scans may take longer and can hit API limits; reduce the list if workflow timeouts occur. Role matching includes platform/infrastructure/system engineering roles and junior/associate language. The seen-ID history was retained. Existing job alerts still require a new detection event; rerunning does not resend historic listings.
+
+No paid sources, scraping of protected job boards, or AI service is required. Company-board APIs still cannot guarantee coverage of every job on the internet.

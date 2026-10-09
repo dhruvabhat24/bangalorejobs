@@ -20,6 +20,8 @@ class MatchingTests(unittest.TestCase):
         self.assertIsNone(matches(job(description="5+ years experience"),CFG))
     def test_overlapping_range(self):
         self.assertIsNotNone(matches(job(description="1-3 years experience"),CFG))
+    def test_platform_engineer(self):
+        self.assertIsNotNone(matches(job(title="Junior Platform Engineer"),CFG))
     def test_years_parse(self):
         self.assertEqual(years_required("2-4 years experience"),[(2,4)])
 if __name__=="__main__":
