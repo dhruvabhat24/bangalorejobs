@@ -19,6 +19,9 @@ class HealthTests(unittest.TestCase):
         msg=summarize({"scans":scans},now=NOW)
         self.assertIn("Alerts sent: 1",msg)
         self.assertIn("lever/a (1)",msg)
+    def test_stage_reporting(self):
+        scan={"at":NOW.isoformat(),"boards":[],"postings":10,"filter_stages":{"total":10,"title":3,"location":2,"eligible":1},"near_matches":{"location":[],"experience":[]}}
+        self.assertIn("title 3 -> Bangalore 2 -> experience 1",summarize({"scans":[scan]},now=NOW))
     def test_no_recent_scans(self):
         self.assertIn("No scan history",summarize({"scans":[]},now=NOW))
     def test_http_error_redacted(self):

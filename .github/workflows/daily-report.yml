@@ -3,19 +3,28 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '15 3 * * *'
+  workflow_run:
+    workflows: ["Bangalore Job Alerts"]
+    types: [completed]
 permissions:
   contents: read
+concurrency:
+  group: daily-monitor-report
+  cancel-in-progress: false
 jobs:
   report:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Validate health report
         run: python -m unittest discover -s tests -v
-      - name: Send Telegram daily report
+      - name: Send Telegram summary
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}

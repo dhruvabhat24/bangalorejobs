@@ -121,6 +121,20 @@ def years_required(description):
             result.append((int(exact), int(exact)))
     return result
 
+def filter_stage(job, cfg):
+    """Return first failed filter, or eligible. Stage totals are cumulative."""
+    title = job["title"]
+    if SENIOR.search(title) or not any(re.search(pattern, title, re.I) for pattern in TITLE):
+        return "title"
+    if not any(city in job["location"].casefold() for city in cfg["locations"]):
+        return "location"
+    exp = years_required(job["description"])
+    if exp and not any(low <= cfg["experience_max"] and high >= cfg["experience_min"] for low, high in exp):
+        return "experience"
+    if not exp and not cfg.get("allow_unspecified_experience", True):
+        return "experience"
+    return "eligible"
+
 def matches(job, cfg):
     title = job["title"]
     if SENIOR.search(title) or not any(re.search(pattern, title, re.I) for pattern in TITLE):
@@ -151,6 +165,8 @@ def run(dry_run=False):
     total = 0
     successful_boards = 0
     diagnostics = []
+    stages = {"total": 0, "title": 0, "location": 0, "eligible": 0}
+    near_matches = {"location": [], "experience": []}
     current_ids = set()
     current_examples = []
     for provider, all_boards in cfg["sources"].items():
@@ -213,7 +229,7 @@ def run(dry_run=False):
             seen.difference_update(j["id"] for j, _ in candidates if j["id"] not in notified)
         STATE.parent.mkdir(parents=True, exist_ok=True)
         STATE.write_text(json.dumps({"ids": sorted(seen)}, indent=2) + "\n", encoding="utf-8")
-        save_scan({"at": utc_now(), "boards": diagnostics, "postings": total, "new_matches": len(candidates), "alerts_sent": len(notified), "current_matches": len(current_ids), "current_examples": current_examples, "company_boards_configured": sum(len(v) for k,v in cfg["sources"].items() if k in ("greenhouse","lever","ashby")), "company_boards_scanned": sum(1 for b in diagnostics if b["source"].split("/")[0] in ("greenhouse","lever","ashby"))})
+        save_scan({"at": utc_now(), "boards": diagnostics, "postings": total, "new_matches": len(candidates), "alerts_sent": len(notified), "current_matches": len(current_ids), "current_examples": current_examples, "filter_stages": stages, "near_matches": near_matches, "company_boards_configured": sum(len(v) for k,v in cfg["sources"].items() if k in ("greenhouse","lever","ashby")), "company_boards_scanned": sum(1 for b in diagnostics if b["source"].split("/")[0] in ("greenhouse","lever","ashby"))})
         LOG.info("Board health: %d OK, %d empty, %d failed", sum(b["status"] == "ok" for b in diagnostics), sum(b["status"] == "empty" for b in diagnostics), sum(b["status"] == "failed" for b in diagnostics))
 
 if __name__ == "__main__":

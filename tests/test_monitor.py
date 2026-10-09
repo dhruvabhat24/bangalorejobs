@@ -2,13 +2,18 @@ import unittest
 import sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from monitor import matches, years_required, himalayas, ashby, select_boards
+from monitor import matches, years_required, himalayas, ashby, select_boards, filter_stage
 from unittest.mock import patch
 
 CFG={"experience_min":1,"experience_max":2,"locations":["bangalore","bengaluru"],"skills":["Docker","Git","Linux","Terraform"],"minimum_skill_matches":0,"allow_unspecified_experience":True}
 def job(title="DevOps Engineer", location="Bengaluru", description="1-2 years experience in Docker and Linux"):
     return {"title":title,"location":location,"description":description}
 class MatchingTests(unittest.TestCase):
+    def test_filter_stages(self):
+        self.assertEqual(filter_stage(job(),CFG),"eligible")
+        self.assertEqual(filter_stage(job(title="Accountant"),CFG),"title")
+        self.assertEqual(filter_stage(job(location="Pune"),CFG),"location")
+        self.assertEqual(filter_stage(job(description="7+ years experience"),CFG),"experience")
     def test_good_match(self):
         self.assertIsNotNone(matches(job(),CFG))
     def test_not_bangalore(self):
