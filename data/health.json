@@ -1,230 +1,6 @@
 {
   "scans": [
     {
-      "at": "2026-10-09T11:51:06+00:00",
-      "boards": [
-        {
-          "source": "greenhouse/cloudflare",
-          "status": "ok",
-          "postings": 421
-        },
-        {
-          "source": "greenhouse/datadog",
-          "status": "ok",
-          "postings": 432
-        },
-        {
-          "source": "greenhouse/groww",
-          "status": "ok",
-          "postings": 9
-        },
-        {
-          "source": "greenhouse/mongodb",
-          "status": "ok",
-          "postings": 393
-        },
-        {
-          "source": "greenhouse/elastic",
-          "status": "ok",
-          "postings": 417
-        },
-        {
-          "source": "greenhouse/rubrik",
-          "status": "ok",
-          "postings": 134
-        },
-        {
-          "source": "greenhouse/databricks",
-          "status": "ok",
-          "postings": 893
-        },
-        {
-          "source": "greenhouse/gitlab",
-          "status": "ok",
-          "postings": 219
-        },
-        {
-          "source": "greenhouse/cockroachlabs",
-          "status": "ok",
-          "postings": 18
-        },
-        {
-          "source": "greenhouse/stripe",
-          "status": "ok",
-          "postings": 732
-        },
-        {
-          "source": "greenhouse/airtable",
-          "status": "ok",
-          "postings": 4
-        },
-        {
-          "source": "greenhouse/figma",
-          "status": "ok",
-          "postings": 153
-        },
-        {
-          "source": "lever/palantir",
-          "status": "ok",
-          "postings": 313
-        },
-        {
-          "source": "lever/zeta",
-          "status": "ok",
-          "postings": 24
-        },
-        {
-          "source": "lever/spotify",
-          "status": "ok",
-          "postings": 79
-        },
-        {
-          "source": "himalayas/devops engineer",
-          "status": "ok",
-          "postings": 19
-        },
-        {
-          "source": "himalayas/site reliability engineer",
-          "status": "ok",
-          "postings": 20
-        },
-        {
-          "source": "himalayas/cloud engineer",
-          "status": "ok",
-          "postings": 20
-        },
-        {
-          "source": "himalayas/linux administrator",
-          "status": "ok",
-          "postings": 20
-        },
-        {
-          "source": "ashby/beaconai",
-          "status": "ok",
-          "postings": 19
-        },
-        {
-          "source": "ashby/beaconsoftware",
-          "status": "ok",
-          "postings": 49
-        },
-        {
-          "source": "ashby/benchling",
-          "status": "ok",
-          "postings": 57
-        },
-        {
-          "source": "ashby/bild-ai",
-          "status": "ok",
-          "postings": 4
-        },
-        {
-          "source": "ashby/binance.us",
-          "status": "ok",
-          "postings": 8
-        },
-        {
-          "source": "ashby/blackbird-labs-inc",
-          "status": "ok",
-          "postings": 5
-        },
-        {
-          "source": "ashby/blissway",
-          "status": "ok",
-          "postings": 11
-        },
-        {
-          "source": "ashby/blitzy",
-          "status": "ok",
-          "postings": 34
-        },
-        {
-          "source": "ashby/blockhouse",
-          "status": "empty",
-          "postings": 0
-        },
-        {
-          "source": "ashby/bloxd",
-          "status": "empty",
-          "postings": 0
-        },
-        {
-          "source": "ashby/brainbaselabs",
-          "status": "ok",
-          "postings": 6
-        },
-        {
-          "source": "ashby/brainco",
-          "status": "ok",
-          "postings": 34
-        },
-        {
-          "source": "ashby/bree",
-          "status": "ok",
-          "postings": 13
-        },
-        {
-          "source": "ashby/bridger",
-          "status": "ok",
-          "postings": 3
-        },
-        {
-          "source": "ashby/brinc",
-          "status": "ok",
-          "postings": 32
-        },
-        {
-          "source": "ashby/broccoli",
-          "status": "ok",
-          "postings": 33
-        },
-        {
-          "source": "ashby/cantina",
-          "status": "ok",
-          "postings": 18
-        },
-        {
-          "source": "ashby/capy",
-          "status": "ok",
-          "postings": 2
-        }
-      ],
-      "postings": 4648,
-      "new_matches": 0,
-      "alerts_sent": 0,
-      "current_matches": 0,
-      "current_examples": [],
-      "filter_stages": {
-        "total": 4648,
-        "title": 75,
-        "location": 1,
-        "eligible": 0
-      },
-      "near_matches": {
-        "location": [
-          {
-            "title": "Hardware Systems Engineer",
-            "location": "In-Office",
-            "url": "https://boards.greenhouse.io/cloudflare/jobs/8223480?gh_jid=8223480"
-          },
-          {
-            "title": "System Engineer, Behavioral Analysis",
-            "location": "Hybrid",
-            "url": "https://boards.greenhouse.io/cloudflare/jobs/8241822?gh_jid=8241822"
-          }
-        ],
-        "experience": [
-          {
-            "title": "Cloud Operations Engineer",
-            "location": "Bengaluru",
-            "url": "https://www.mongodb.com/careers/job/?gh_jid=8184637"
-          }
-        ]
-      },
-      "company_boards_configured": 105,
-      "company_boards_scanned": 33
-    },
-    {
       "at": "2026-10-09T18:19:25+00:00",
       "boards": [
         {
@@ -17299,6 +17075,235 @@
       "filter_stages": {
         "total": 5058,
         "title": 79,
+        "location": 2,
+        "eligible": 1
+      },
+      "near_matches": {
+        "location": [
+          {
+            "title": "Hardware Systems Engineer",
+            "location": "In-Office",
+            "url": "https://boards.greenhouse.io/cloudflare/jobs/8223480?gh_jid=8223480"
+          },
+          {
+            "title": "System Engineer, Behavioral Analysis",
+            "location": "Hybrid",
+            "url": "https://boards.greenhouse.io/cloudflare/jobs/8241822?gh_jid=8241822"
+          }
+        ],
+        "experience": [
+          {
+            "title": "Cloud Operations Engineer",
+            "location": "Bengaluru",
+            "url": "https://www.mongodb.com/careers/job/?gh_jid=8184637"
+          }
+        ]
+      },
+      "company_boards_configured": 105,
+      "company_boards_scanned": 33
+    },
+    {
+      "at": "2026-10-23T15:00:06+00:00",
+      "boards": [
+        {
+          "source": "greenhouse/cloudflare",
+          "status": "ok",
+          "postings": 447
+        },
+        {
+          "source": "greenhouse/datadog",
+          "status": "ok",
+          "postings": 437
+        },
+        {
+          "source": "greenhouse/groww",
+          "status": "ok",
+          "postings": 10
+        },
+        {
+          "source": "greenhouse/mongodb",
+          "status": "ok",
+          "postings": 387
+        },
+        {
+          "source": "greenhouse/elastic",
+          "status": "ok",
+          "postings": 395
+        },
+        {
+          "source": "greenhouse/rubrik",
+          "status": "ok",
+          "postings": 148
+        },
+        {
+          "source": "greenhouse/databricks",
+          "status": "ok",
+          "postings": 895
+        },
+        {
+          "source": "greenhouse/gitlab",
+          "status": "ok",
+          "postings": 231
+        },
+        {
+          "source": "greenhouse/cockroachlabs",
+          "status": "ok",
+          "postings": 15
+        },
+        {
+          "source": "greenhouse/stripe",
+          "status": "ok",
+          "postings": 723
+        },
+        {
+          "source": "greenhouse/airtable",
+          "status": "ok",
+          "postings": 4
+        },
+        {
+          "source": "greenhouse/figma",
+          "status": "ok",
+          "postings": 141
+        },
+        {
+          "source": "lever/palantir",
+          "status": "ok",
+          "postings": 309
+        },
+        {
+          "source": "lever/zeta",
+          "status": "ok",
+          "postings": 27
+        },
+        {
+          "source": "lever/spotify",
+          "status": "ok",
+          "postings": 82
+        },
+        {
+          "source": "himalayas/devops engineer",
+          "status": "ok",
+          "postings": 20
+        },
+        {
+          "source": "himalayas/site reliability engineer",
+          "status": "ok",
+          "postings": 20
+        },
+        {
+          "source": "himalayas/cloud engineer",
+          "status": "ok",
+          "postings": 20
+        },
+        {
+          "source": "himalayas/linux administrator",
+          "status": "ok",
+          "postings": 20
+        },
+        {
+          "source": "ashby/ashby",
+          "status": "ok",
+          "postings": 69
+        },
+        {
+          "source": "ashby/assembledhq",
+          "status": "ok",
+          "postings": 15
+        },
+        {
+          "source": "ashby/astera",
+          "status": "ok",
+          "postings": 42
+        },
+        {
+          "source": "ashby/astro-mechanica",
+          "status": "ok",
+          "postings": 35
+        },
+        {
+          "source": "ashby/astronomer",
+          "status": "ok",
+          "postings": 18
+        },
+        {
+          "source": "ashby/atomic-invest",
+          "status": "ok",
+          "postings": 9
+        },
+        {
+          "source": "ashby/atominvest",
+          "status": "ok",
+          "postings": 13
+        },
+        {
+          "source": "ashby/auctor",
+          "status": "ok",
+          "postings": 11
+        },
+        {
+          "source": "ashby/augmodo",
+          "status": "ok",
+          "postings": 4
+        },
+        {
+          "source": "ashby/aurelian",
+          "status": "ok",
+          "postings": 8
+        },
+        {
+          "source": "ashby/aureliussystems",
+          "status": "ok",
+          "postings": 11
+        },
+        {
+          "source": "ashby/Authorium",
+          "status": "ok",
+          "postings": 6
+        },
+        {
+          "source": "ashby/avoca",
+          "status": "ok",
+          "postings": 24
+        },
+        {
+          "source": "ashby/backbone",
+          "status": "ok",
+          "postings": 3
+        },
+        {
+          "source": "ashby/base-power",
+          "status": "ok",
+          "postings": 190
+        },
+        {
+          "source": "ashby/baseten",
+          "status": "ok",
+          "postings": 105
+        },
+        {
+          "source": "ashby/basis-research",
+          "status": "ok",
+          "postings": 13
+        },
+        {
+          "source": "ashby/batoncorporation",
+          "status": "ok",
+          "postings": 10
+        }
+      ],
+      "postings": 4917,
+      "new_matches": 0,
+      "alerts_sent": 0,
+      "current_matches": 1,
+      "current_examples": [
+        {
+          "title": "People Systems Engineer",
+          "url": "https://job-boards.greenhouse.io/gitlab/jobs/8861748002"
+        }
+      ],
+      "filter_stages": {
+        "total": 4917,
+        "title": 72,
         "location": 2,
         "eligible": 1
       },
